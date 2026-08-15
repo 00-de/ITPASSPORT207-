@@ -104,11 +104,12 @@ export default function Settings({ onRequireLogin }: { onRequireLogin: () => voi
         <SectionTitle eyebrow="AI TEACHER" title="AI先生の設定" />
         <div className="card p-5 space-y-3">
           <p className="eyebrow">使用するAI</p>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {(
               [
                 ['auto', '自動'],
                 ['groq', 'Groq'],
+                ['gemini', 'Gemini'],
                 ['openai', 'ChatGPT'],
               ] as [Provider, string][]
             ).map(([id, label]) => (
@@ -124,7 +125,7 @@ export default function Settings({ onRequireLogin }: { onRequireLogin: () => voi
             ))}
           </div>
           <p className="text-xs text-slate1 leading-relaxed">
-            「自動」はGroqを先に使い、応答できないときChatGPTに切り替えます。片方のAPIキーだけ登録している場合は、そちらだけを使います。
+            「自動」はGroq→Gemini→ChatGPTの順に試し、応答できないものは飛ばします。登録したAPIキーの分だけが候補になります。
           </p>
         </div>
       </section>

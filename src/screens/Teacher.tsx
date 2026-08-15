@@ -100,7 +100,7 @@ export default function Teacher() {
             }`}
           >
             <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{m.text}</p>
-            {m.provider && <p className="eyebrow mt-2 text-slate1/60">{m.provider === 'groq' ? 'GROQ' : 'CHATGPT'}</p>}
+            {m.provider && <p className="eyebrow mt-2 text-slate1/60">{{ groq: 'GROQ', gemini: 'GEMINI', openai: 'CHATGPT' }[m.provider] ?? m.provider.toUpperCase()}</p>}
           </div>
         </div>
       ))}

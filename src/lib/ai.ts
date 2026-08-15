@@ -1,19 +1,21 @@
 import { auth } from './firebase'
 import type { Question } from '../types'
 
-export type Provider = 'auto' | 'groq' | 'openai'
+export type Provider = 'auto' | 'groq' | 'gemini' | 'openai'
 export const PROVIDER_KEY = 'itp2027:aiProvider'
 
 export const getPreferredProvider = (): Provider => {
   const v = localStorage.getItem(PROVIDER_KEY)
-  return v === 'groq' || v === 'openai' ? v : 'auto'
+  return v === 'groq' || v === 'gemini' || v === 'openai' ? v : 'auto'
 }
 
 export const setPreferredProvider = (p: Provider) => localStorage.setItem(PROVIDER_KEY, p)
 
+export type UsedProvider = 'groq' | 'gemini' | 'openai'
+
 export interface AiReply {
   text: string
-  provider: 'groq' | 'openai'
+  provider: UsedProvider
 }
 
 const request = async (mode: 'chat' | 'similar', prompt: string): Promise<AiReply> => {
@@ -25,7 +27,7 @@ const request = async (mode: 'chat' | 'similar', prompt: string): Promise<AiRepl
   })
   const data = await res.json().catch(() => ({}) as Record<string, unknown>)
   if (!res.ok) throw new Error((data as { error?: string }).error ?? 'AI先生に接続できませんでした')
-  return { text: (data as { text: string }).text, provider: (data as { provider: 'groq' | 'openai' }).provider }
+  return { text: (data as { text: string }).text, provider: (data as { provider: UsedProvider }).provider }
 }
 
 export const askTeacher = (prompt: string) => request('chat', prompt)

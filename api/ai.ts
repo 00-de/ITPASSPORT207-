@@ -5,7 +5,7 @@
  * 既定はGroq。失敗したらOpenAIへ自動で切り替える。
  */
 
-type Provider = 'groq' | 'openai'
+type Provider = 'groq' | 'gemini' | 'openai'
 
 interface ProviderConfig {
   name: Provider
@@ -20,6 +20,13 @@ const providers = (): ProviderConfig[] => [
     url: 'https://api.groq.com/openai/v1/chat/completions',
     key: process.env.GROQ_API_KEY,
     model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
+  },
+  {
+    // Google AI Studio（Gemini）。OpenAI互換の窓口を使うので、呼び出し方は他と同じ
+    name: 'gemini',
+    url: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
+    key: process.env.GEMINI_API_KEY,
+    model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
   },
   {
     name: 'openai',
@@ -127,7 +134,7 @@ export default async function handler(req: any, res: any) {
     return
   }
   const order =
-    prefer === 'groq' || prefer === 'openai'
+    prefer && prefer !== 'auto'
       ? [...all.filter((p) => p.name === prefer), ...all.filter((p) => p.name !== prefer)]
       : all
 
