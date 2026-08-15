@@ -1,0 +1,706 @@
+import type { Question } from '../types'
+
+// ITパスポート試験 シラバス Ver.6.5 準拠の初期問題セット
+// カテゴリ配分は本試験に近い比率（ストラテジ 35 / マネジメント 20 / テクノロジ 45）を意識
+export const QUESTIONS: Question[] = [
+  // ───────────── ストラテジ系 ─────────────
+  {
+    id: 'ST001',
+    category: 'strategy',
+    field: '企業活動',
+    difficulty: 1,
+    question: '企業の社会的責任を果たす活動を示す用語はどれか。',
+    choices: ['CSR', 'CRM', 'SFA', 'ERP'],
+    answer: 0,
+    explanation:
+      'CSR（Corporate Social Responsibility）は、企業が利益追求だけでなく、環境・人権・地域社会などに配慮して責任ある行動をとる考え方です。CRMは顧客関係管理、SFAは営業支援、ERPは経営資源の統合管理を指します。',
+  },
+  {
+    id: 'ST002',
+    category: 'strategy',
+    field: '企業活動',
+    difficulty: 2,
+    question: '目標を「具体的・測定可能・達成可能・関連性・期限」の5要素で設定する考え方はどれか。',
+    choices: ['PDCA', 'SMART', 'SWOT', '3C分析'],
+    answer: 1,
+    explanation:
+      'SMARTはSpecific、Measurable、Achievable、Relevant、Time-boundの頭文字です。PDCAは改善サイクル、SWOTは内部・外部環境分析、3Cは顧客・競合・自社の分析手法です。',
+  },
+  {
+    id: 'ST003',
+    category: 'strategy',
+    field: '経営戦略',
+    difficulty: 2,
+    question: '自社の強み・弱み・機会・脅威を整理して戦略を立てる分析手法はどれか。',
+    choices: ['PPM', 'SWOT分析', 'バリューチェーン分析', 'ベンチマーキング'],
+    answer: 1,
+    explanation:
+      'SWOT分析は内部環境（強み・弱み）と外部環境（機会・脅威）を整理します。PPMは製品や事業への資源配分、バリューチェーン分析は価値を生む活動の分解、ベンチマーキングは他社の優れた事例との比較です。',
+  },
+  {
+    id: 'ST004',
+    category: 'strategy',
+    field: '経営戦略',
+    difficulty: 2,
+    question: '市場成長率と市場占有率の2軸で事業を分類し、資源配分を検討する手法はどれか。',
+    choices: ['PPM', 'PEST分析', 'ファイブフォース分析', 'コアコンピタンス分析'],
+    answer: 0,
+    explanation:
+      'PPM（プロダクトポートフォリオマネジメント）は「花形」「金のなる木」「問題児」「負け犬」の4象限に事業を分類します。',
+  },
+  {
+    id: 'ST005',
+    category: 'strategy',
+    field: 'マーケティング',
+    difficulty: 1,
+    question: 'マーケティングミックス（4P）に含まれないものはどれか。',
+    choices: ['Product', 'Price', 'People', 'Promotion'],
+    answer: 2,
+    explanation:
+      '4PはProduct（製品）、Price（価格）、Place（流通）、Promotion（販売促進）です。Peopleはサービス業向けに拡張した7Pの要素です。',
+  },
+  {
+    id: 'ST006',
+    category: 'strategy',
+    field: 'マーケティング',
+    difficulty: 2,
+    question: '顧客一人ひとりの情報を管理し、長期的な関係を築いて収益向上を目指す仕組みはどれか。',
+    choices: ['SCM', 'CRM', 'MRP', 'CAD'],
+    answer: 1,
+    explanation:
+      'CRM（顧客関係管理）は顧客情報を一元管理し、満足度と生涯価値を高めます。SCMは供給連鎖管理、MRPは資材所要量計画、CADは設計支援です。',
+  },
+  {
+    id: 'ST007',
+    category: 'strategy',
+    field: '法務',
+    difficulty: 2,
+    question: 'プログラムの著作権は原則としてどの法律で保護されるか。',
+    choices: ['特許法', '著作権法', '不正競争防止法', '商標法'],
+    answer: 1,
+    explanation:
+      'プログラムは著作物として著作権法で保護されます。アルゴリズムやプログラム言語、規約自体は著作権法の保護対象外です。',
+  },
+  {
+    id: 'ST008',
+    category: 'strategy',
+    field: '法務',
+    difficulty: 2,
+    question: '個人情報保護法において、個人情報取扱事業者が取得時に行うべきことはどれか。',
+    choices: [
+      '利用目的をできる限り特定して通知または公表する',
+      '本人の同意なくいつでも第三者に提供する',
+      '取得後に利用目的を自由に変更する',
+      '保有個人データの開示請求には応じない',
+    ],
+    answer: 0,
+    explanation:
+      '個人情報は利用目的をできる限り特定し、取得時に本人へ通知または公表する必要があります。第三者提供は原則として本人の同意が必要です。',
+  },
+  {
+    id: 'ST009',
+    category: 'strategy',
+    field: '法務',
+    difficulty: 3,
+    question: '労働者派遣において、派遣労働者に業務上の指揮命令を行うのは誰か。',
+    choices: ['派遣元企業', '派遣先企業', '労働基準監督署', '労働組合'],
+    answer: 1,
+    explanation:
+      '労働者派遣では雇用契約は派遣元と結びますが、指揮命令は派遣先が行います。請負契約では発注者が労働者へ直接指揮命令できません（偽装請負となります）。',
+  },
+  {
+    id: 'ST010',
+    category: 'strategy',
+    field: '法務',
+    difficulty: 3,
+    question:
+      '取引上の立場が強い発注者による代金の支払遅延や不当な減額を規制し、下請事業者を保護する法律はどれか。',
+    choices: ['中小受託取引適正化法（旧・下請代金支払遅延等防止法）', '製造物責任法', '独占禁止法', '労働者派遣法'],
+    answer: 0,
+    explanation:
+      '中小受託取引適正化法は下請代金支払遅延等防止法が改称されたもので、支払遅延・不当な代金減額・買いたたきなどを禁止し、受託側の中小事業者を保護します。',
+  },
+  {
+    id: 'ST011',
+    category: 'strategy',
+    field: 'DX',
+    difficulty: 2,
+    question: 'DX（デジタルトランスフォーメーション）の説明として最も適切なものはどれか。',
+    choices: [
+      '紙の帳票をそのままPDF化して保存すること',
+      'デジタル技術を活用して製品・サービスやビジネスモデルそのものを変革すること',
+      '社内サーバをすべて自社運用に戻すこと',
+      'PCの台数を増やして作業を分担すること',
+    ],
+    answer: 1,
+    explanation:
+      'DXは単なるデジタル化（デジタイゼーション）ではなく、ビジネスモデルや組織・企業文化までを変革し、競争上の優位性を確立する取組みを指します。',
+  },
+  {
+    id: 'ST012',
+    category: 'strategy',
+    field: 'DX・AI',
+    difficulty: 2,
+    question: '生成AIが、事実に基づかないもっともらしい内容を出力してしまう現象を何と呼ぶか。',
+    choices: ['ハルシネーション', 'オーバーフィッティング', 'アノテーション', 'ファインチューニング'],
+    answer: 0,
+    explanation:
+      'ハルシネーション（幻覚）は、生成AIが学習データにない事柄や誤った事実をもっともらしく出力する現象です。出力内容は利用者が必ず事実確認する必要があります。',
+  },
+  {
+    id: 'ST013',
+    category: 'strategy',
+    field: 'DX・AI',
+    difficulty: 3,
+    question:
+      '生成AIの回答精度を高めるため、外部の文書データベースを検索して得た情報を根拠として回答させる手法はどれか。',
+    choices: ['RAG', 'GAN', 'CNN', 'OCR'],
+    answer: 0,
+    explanation:
+      'RAG（Retrieval-Augmented Generation：検索拡張生成）は、社内文書などを検索して取得した情報をプロンプトに与え、根拠のある回答を生成させる手法です。',
+  },
+  {
+    id: 'ST014',
+    category: 'strategy',
+    field: 'DX・AI',
+    difficulty: 2,
+    question: 'プロンプトエンジニアリングの説明として適切なものはどれか。',
+    choices: [
+      'AIモデルの内部パラメータを直接書き換える作業',
+      '望ましい出力を得るために指示文を工夫・改善する取組み',
+      'AIの学習用データにラベルを付ける作業',
+      'AIサーバのネットワーク設計を行う作業',
+    ],
+    answer: 1,
+    explanation:
+      'プロンプトエンジニアリングは、役割・条件・出力形式・例示などを指示文に含めて、生成AIから目的に合った出力を引き出す工夫を指します。',
+  },
+  {
+    id: 'ST015',
+    category: 'strategy',
+    field: 'DX・AI',
+    difficulty: 3,
+    question: 'AIガバナンスの取組みとして適切でないものはどれか。',
+    choices: [
+      'AIの判断根拠の説明可能性を確保する',
+      '学習データの偏りによる差別的な出力を点検する',
+      '利用ルールを定めて機密情報の入力を制限する',
+      '精度向上のため個人情報を本人の同意なく学習に利用する',
+    ],
+    answer: 3,
+    explanation:
+      'AIガバナンスは公平性・透明性・説明責任・安全性・プライバシー保護を確保する統制です。本人の同意なく個人情報を学習利用することは法令にも反します。',
+  },
+  {
+    id: 'ST016',
+    category: 'strategy',
+    field: 'システム戦略',
+    difficulty: 2,
+    question: '自社の業務の一部を外部の専門企業に委託することを何というか。',
+    choices: ['アウトソーシング', 'オフショア開発', 'クラウドファンディング', 'ライセンシング'],
+    answer: 0,
+    explanation:
+      'アウトソーシングは業務を外部委託して自社の中核業務に集中する手法です。海外へ開発を委託する場合は特にオフショア開発と呼びます。',
+  },
+  {
+    id: 'ST017',
+    category: 'strategy',
+    field: 'システム企画',
+    difficulty: 2,
+    question: '調達において、発注先候補に提案を依頼するために提示する文書はどれか。',
+    choices: ['RFI', 'RFP', 'SLA', 'NDA'],
+    answer: 1,
+    explanation:
+      'RFP（提案依頼書）は要件や条件を示して提案を求める文書です。RFIは情報提供依頼書、SLAはサービス品質の合意書、NDAは秘密保持契約です。',
+  },
+  {
+    id: 'ST018',
+    category: 'strategy',
+    field: '企業活動',
+    difficulty: 3,
+    question: '売上高500万円、変動費200万円、固定費210万円のとき、損益分岐点売上高はいくらか。',
+    choices: ['300万円', '350万円', '410万円', '450万円'],
+    answer: 1,
+    explanation:
+      '限界利益率＝(500-200)÷500＝0.6。損益分岐点売上高＝固定費÷限界利益率＝210÷0.6＝350万円です。',
+  },
+
+  // ───────────── マネジメント系 ─────────────
+  {
+    id: 'MG001',
+    category: 'management',
+    field: 'システム開発',
+    difficulty: 1,
+    question: 'ウォータフォールモデルにおいて、要件定義の次に行う工程はどれか。',
+    choices: ['システム設計', 'プログラミング', '運用', 'テスト'],
+    answer: 0,
+    explanation:
+      'ウォータフォールモデルは要件定義→システム設計→プログラミング→テスト→運用の順に進み、原則として前工程へ戻りません。',
+  },
+  {
+    id: 'MG002',
+    category: 'management',
+    field: 'システム開発',
+    difficulty: 2,
+    question: 'モジュール単体の動作を確認するテストはどれか。',
+    choices: ['単体テスト', '結合テスト', 'システムテスト', '運用テスト'],
+    answer: 0,
+    explanation:
+      '単体テストは個々のモジュールを検証し、結合テストはモジュール間の連携、システムテストは全体、運用テスト（受入テスト）は利用者が実務観点で検証します。',
+  },
+  {
+    id: 'MG003',
+    category: 'management',
+    field: 'システム開発',
+    difficulty: 2,
+    question: '短い期間の反復（イテレーション）で開発と検証を繰り返し、変化に柔軟に対応する開発手法はどれか。',
+    choices: ['ウォータフォール', 'アジャイル', 'リバースエンジニアリング', 'RAD'],
+    answer: 1,
+    explanation:
+      'アジャイル開発は短い反復を繰り返して動くソフトウェアを継続的に提供します。代表的な手法にスクラムやXP（エクストリームプログラミング）があります。',
+  },
+  {
+    id: 'MG004',
+    category: 'management',
+    field: 'システム開発',
+    difficulty: 3,
+    question: 'スクラムにおいて、開発チームが毎日短時間で進捗と課題を共有する場はどれか。',
+    choices: ['スプリントレビュー', 'デイリースクラム', 'レトロスペクティブ', 'プランニングポーカー'],
+    answer: 1,
+    explanation:
+      'デイリースクラムは毎日15分程度で状況共有と障害の洗い出しを行います。スプリントレビューは成果物の確認、レトロスペクティブは進め方の振り返りです。',
+  },
+  {
+    id: 'MG005',
+    category: 'management',
+    field: 'プロジェクト管理',
+    difficulty: 2,
+    question: 'プロジェクトの作業を階層的に分解して管理しやすくした図はどれか。',
+    choices: ['WBS', 'ER図', 'DFD', 'フローチャート'],
+    answer: 0,
+    explanation:
+      'WBS（Work Breakdown Structure）は成果物や作業を段階的に細分化し、見積りや進捗管理の単位を明確にします。',
+  },
+  {
+    id: 'MG006',
+    category: 'management',
+    field: 'プロジェクト管理',
+    difficulty: 3,
+    question: 'アローダイアグラムで、遅れるとプロジェクト全体の期間が延びる作業経路を何というか。',
+    choices: ['クリティカルパス', 'マイルストーン', 'バッファ', 'ベースライン'],
+    answer: 0,
+    explanation:
+      'クリティカルパスは最も所要時間の長い経路で、余裕（フロート）がありません。この経路上の遅延は全体日程の遅延に直結します。',
+  },
+  {
+    id: 'MG007',
+    category: 'management',
+    field: 'プロジェクト管理',
+    difficulty: 2,
+    question: 'プロジェクトマネジメントで扱う「スコープ」の説明として適切なものはどれか。',
+    choices: [
+      'プロジェクトの作業範囲と成果物の範囲',
+      'プロジェクトに投入する費用の合計',
+      'プロジェクトの開始日と終了日',
+      'プロジェクトに参加する要員の一覧',
+    ],
+    answer: 0,
+    explanation:
+      'スコープは「何をどこまでやるか」の範囲です。範囲が無秩序に膨らむことをスコープクリープと呼び、変更管理で統制します。',
+  },
+  {
+    id: 'MG008',
+    category: 'management',
+    field: 'サービス管理',
+    difficulty: 2,
+    question: 'ITサービスの利用者からの問合せを一元的に受け付ける窓口はどれか。',
+    choices: ['サービスデスク', 'データセンタ', 'SOC', 'CSIRT'],
+    answer: 0,
+    explanation:
+      'サービスデスクは問合せや障害連絡の単一窓口（SPOC）です。SOCはセキュリティ監視、CSIRTはセキュリティインシデント対応の専門組織です。',
+  },
+  {
+    id: 'MG009',
+    category: 'management',
+    field: 'サービス管理',
+    difficulty: 2,
+    question: 'サービス提供者と利用者の間で、サービス品質の水準を合意した文書はどれか。',
+    choices: ['SLA', 'RFP', 'WBS', 'BCP'],
+    answer: 0,
+    explanation:
+      'SLA（Service Level Agreement）は稼働率や応答時間などの水準を合意します。運用管理としてサービス水準を維持・改善する活動をSLMと呼びます。',
+  },
+  {
+    id: 'MG010',
+    category: 'management',
+    field: 'サービス管理',
+    difficulty: 3,
+    question: 'ファシリティマネジメントの観点から、停電時にサーバを安全に停止させるための装置はどれか。',
+    choices: ['UPS', 'RAID', 'NAS', 'KVM'],
+    answer: 0,
+    explanation:
+      'UPS（無停電電源装置）は停電時に一時的に電力を供給し、安全なシャットダウンや自家発電への切替時間を確保します。',
+  },
+  {
+    id: 'MG011',
+    category: 'management',
+    field: 'システム監査',
+    difficulty: 2,
+    question: 'システム監査人に求められる要件として最も適切なものはどれか。',
+    choices: [
+      '監査対象部門から独立していること',
+      '監査対象システムの開発責任者であること',
+      '経理部門の所属であること',
+      '被監査部門の上司であること',
+    ],
+    answer: 0,
+    explanation:
+      'システム監査人には独立性と客観性が求められます。自らが開発・運用に関与したシステムを監査すると、公正な評価ができません。',
+  },
+  {
+    id: 'MG012',
+    category: 'management',
+    field: 'システム監査',
+    difficulty: 3,
+    question: '内部統制における「職務分掌」の目的として適切なものはどれか。',
+    choices: [
+      '一人の担当者に権限が集中して不正が起きることを防ぐ',
+      '担当者を減らして人件費を削減する',
+      '作業手順を廃止して自由度を高める',
+      '監査の頻度を減らす',
+    ],
+    answer: 0,
+    explanation:
+      '職務分掌は申請・承認・実行などの役割を複数人に分け、相互けん制によって不正やミスを防ぐ内部統制の基本的な仕組みです。',
+  },
+
+  // ───────────── テクノロジ系 ─────────────
+  {
+    id: 'TC001',
+    category: 'technology',
+    field: 'ハードウェア',
+    difficulty: 1,
+    question: 'CPUの性能を表す指標はどれか。',
+    choices: ['クロック周波数', 'DNS', 'IPアドレス', 'MACアドレス'],
+    answer: 0,
+    explanation:
+      'クロック周波数はCPUが1秒間に刻む動作の回数をHzで表した指標です。DNS・IPアドレス・MACアドレスはいずれもネットワークに関する用語です。',
+  },
+  {
+    id: 'TC002',
+    category: 'technology',
+    field: 'ハードウェア',
+    difficulty: 2,
+    question: '電源を切ると記憶内容が失われる主記憶装置はどれか。',
+    choices: ['DRAM', 'SSD', 'ROM', 'HDD'],
+    answer: 0,
+    explanation:
+      'DRAMは揮発性メモリで、電源が切れると内容が消えます。SSD・HDD・ROMは不揮発性で、電源を切っても内容が保持されます。',
+  },
+  {
+    id: 'TC003',
+    category: 'technology',
+    field: '基礎理論',
+    difficulty: 2,
+    question: '2進数「1011」を10進数で表すといくつか。',
+    choices: ['9', '11', '13', '15'],
+    answer: 1,
+    explanation: '1×8＋0×4＋1×2＋1×1＝11です。各桁は右から1、2、4、8…と2のべき乗になります。',
+  },
+  {
+    id: 'TC004',
+    category: 'technology',
+    field: '基礎理論',
+    difficulty: 2,
+    question: '1GBは何MBか（1024進で計算する）。',
+    choices: ['100MB', '512MB', '1024MB', '2048MB'],
+    answer: 2,
+    explanation: '記憶容量は2進接頭語で扱われ、1GB＝1024MB、1MB＝1024KBとなります。',
+  },
+  {
+    id: 'TC005',
+    category: 'technology',
+    field: 'アルゴリズム',
+    difficulty: 2,
+    question: '処理手順を図形と矢印で表現した図はどれか。',
+    choices: ['フローチャート', 'ER図', 'ガントチャート', 'レーダチャート'],
+    answer: 0,
+    explanation:
+      'フローチャート（流れ図）は開始・処理・判断・終了などの記号で手順を表します。ER図はデータの関連、ガントチャートは日程管理に使います。',
+  },
+  {
+    id: 'TC006',
+    category: 'technology',
+    field: 'アルゴリズム',
+    difficulty: 3,
+    question: '後入れ先出し（LIFO）でデータを扱うデータ構造はどれか。',
+    choices: ['キュー', 'スタック', 'リスト', '木構造'],
+    answer: 1,
+    explanation:
+      'スタックは最後に入れたデータを最初に取り出します（LIFO）。キューは先入れ先出し（FIFO）で、待ち行列の処理に使われます。',
+  },
+  {
+    id: 'TC007',
+    category: 'technology',
+    field: 'プログラミング',
+    difficulty: 2,
+    question: 'Webページの見た目（レイアウトや色）を指定する言語はどれか。',
+    choices: ['HTML', 'CSS', 'SQL', 'XML'],
+    answer: 1,
+    explanation:
+      'CSSはスタイルを指定する言語です。HTMLは文書構造、SQLはデータベース操作、XMLはデータ記述のためのマークアップ言語です。',
+  },
+  {
+    id: 'TC008',
+    category: 'technology',
+    field: 'ソフトウェア',
+    difficulty: 2,
+    question: 'OSS（オープンソースソフトウェア）の特徴として適切なものはどれか。',
+    choices: [
+      'ソースコードが公開され、ライセンス条件に従って改変・再配布ができる',
+      '必ず無償でなければならない',
+      '商用利用が一律に禁止されている',
+      '著作権が放棄されている',
+    ],
+    answer: 0,
+    explanation:
+      'OSSはソースコードが公開され、ライセンスの範囲で利用・改変・再配布が可能です。著作権は放棄されておらず、ライセンス条件の遵守が必要です。',
+  },
+  {
+    id: 'TC009',
+    category: 'technology',
+    field: 'データベース',
+    difficulty: 2,
+    question: '関係データベースで、行を一意に識別するために設定する項目はどれか。',
+    choices: ['主キー', '外部キー', 'インデックス', 'ビュー'],
+    answer: 0,
+    explanation:
+      '主キーは重複せず空値をとらない項目で、行を一意に識別します。外部キーは他の表の主キーを参照し、表どうしの関連を保ちます。',
+  },
+  {
+    id: 'TC010',
+    category: 'technology',
+    field: 'データベース',
+    difficulty: 3,
+    question: '複数の処理をひとまとまりとして扱い、すべて成功か、すべて取消しかのどちらかにする性質はどれか。',
+    choices: ['原子性（アトミシティ）', '正規化', '排他制御', '一貫性制約'],
+    answer: 0,
+    explanation:
+      'トランザクションのACID特性のうち原子性は「全部実行するか、まったく実行しないか」を保証します。確定をコミット、取消しをロールバックと呼びます。',
+  },
+  {
+    id: 'TC011',
+    category: 'technology',
+    field: 'データベース',
+    difficulty: 2,
+    question: 'データの重複や矛盾を防ぐために表を適切に分割する作業はどれか。',
+    choices: ['正規化', '暗号化', '圧縮', 'バックアップ'],
+    answer: 0,
+    explanation:
+      '正規化は重複データを排除し、更新時の不整合（更新異状）を防ぎます。第1〜第3正規形の考え方が基本です。',
+  },
+  {
+    id: 'TC012',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 1,
+    question: 'ドメイン名とIPアドレスを相互に変換する仕組みはどれか。',
+    choices: ['DNS', 'DHCP', 'NAT', 'VPN'],
+    answer: 0,
+    explanation:
+      'DNSは名前解決を行います。DHCPはIPアドレスの自動割当て、NATはプライベートアドレスとグローバルアドレスの変換、VPNは仮想専用線です。',
+  },
+  {
+    id: 'TC013',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 2,
+    question: 'PCがネットワークに接続する際、IPアドレスなどの設定を自動で割り当てるプロトコルはどれか。',
+    choices: ['DHCP', 'SMTP', 'FTP', 'POP3'],
+    answer: 0,
+    explanation:
+      'DHCPはIPアドレス・サブネットマスク・デフォルトゲートウェイなどを自動配布します。SMTPはメール送信、POP3は受信、FTPはファイル転送です。',
+  },
+  {
+    id: 'TC014',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 2,
+    question: 'インターネット上に暗号化された仮想的な専用回線を構築する技術はどれか。',
+    choices: ['VPN', 'LAN', 'PoE', 'SSID'],
+    answer: 0,
+    explanation:
+      'VPN（Virtual Private Network）は通信を暗号化してトンネルを作り、公衆網でも安全に社内ネットワークへ接続できます。',
+  },
+  {
+    id: 'TC015',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 3,
+    question: '無線LANのアクセスポイントを識別するための名前はどれか。',
+    choices: ['SSID', 'MACアドレス', 'ESSID変換', 'WPA3'],
+    answer: 0,
+    explanation:
+      'SSIDは無線LANのネットワーク識別名です。WPA3は暗号化と認証の規格、MACアドレスは機器固有の識別番号です。',
+  },
+  {
+    id: 'TC016',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 2,
+    question: 'IoTの説明として最も適切なものはどれか。',
+    choices: [
+      'さまざまなモノがインターネットに接続し、データを収集・活用する仕組み',
+      '社内の文書を紙で保管する仕組み',
+      '大量のデータを人手で入力する作業',
+      'プログラムを翻訳して実行する装置',
+    ],
+    answer: 0,
+    explanation:
+      'IoT（Internet of Things）はセンサを備えた機器がネットワークにつながり、収集データを分析して制御や新サービスに活用する考え方です。',
+  },
+  {
+    id: 'TC017',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 1,
+    question: '実在する企業を装ったメールで偽サイトへ誘導し、IDやパスワードを盗む攻撃はどれか。',
+    choices: ['フィッシング', 'DoS攻撃', 'SQLインジェクション', 'ゼロデイ攻撃'],
+    answer: 0,
+    explanation:
+      'フィッシングは正規のサイトに似せた偽サイトへ誘導し、認証情報やクレジットカード情報をだまし取ります。',
+  },
+  {
+    id: 'TC018',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 2,
+    question: '情報セキュリティの3要素に含まれないものはどれか。',
+    choices: ['機密性', '完全性', '可用性', '匿名性'],
+    answer: 3,
+    explanation:
+      '情報セキュリティの3要素は機密性（Confidentiality）、完全性（Integrity）、可用性（Availability）です。頭文字からCIAと呼ばれます。',
+  },
+  {
+    id: 'TC019',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 2,
+    question: 'ファイルを暗号化して使用不能にし、復旧と引換えに金銭を要求するマルウェアはどれか。',
+    choices: ['ランサムウェア', 'アドウェア', 'スパイウェア', 'ボット'],
+    answer: 0,
+    explanation:
+      'ランサムウェアはデータを暗号化して身代金を要求します。対策としてオフラインを含む複数世代のバックアップが有効です。',
+  },
+  {
+    id: 'TC020',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 2,
+    question: 'パスワードに加えてスマートフォンへ送られるワンタイムコードを使う認証方式はどれか。',
+    choices: ['二要素認証', 'シングルサインオン', 'ロールベースアクセス制御', 'パスワードリスト攻撃'],
+    answer: 0,
+    explanation:
+      '二要素認証は「知識（パスワード）」「所持（スマートフォン）」「生体」のうち異なる2種類を組み合わせ、不正ログインの危険性を下げます。',
+  },
+  {
+    id: 'TC021',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 3,
+    question: '公開鍵暗号方式を用いてAさんがBさんへ暗号文を送るとき、暗号化に使う鍵はどれか。',
+    choices: ['Aさんの公開鍵', 'Aさんの秘密鍵', 'Bさんの公開鍵', 'Bさんの秘密鍵'],
+    answer: 2,
+    explanation:
+      '受信者Bさんの公開鍵で暗号化すれば、対応するBさんの秘密鍵でしか復号できません。逆に送信者の秘密鍵で署名すると、公開鍵で本人確認ができます（ディジタル署名）。',
+  },
+  {
+    id: 'TC022',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 3,
+    question: 'リスク対応のうち「リスク移転」に該当するものはどれか。',
+    choices: [
+      '保険に加入して損害を補填できるようにする',
+      'サービスそのものを廃止する',
+      '対策費用に見合わないため受け入れる',
+      'ウイルス対策ソフトを導入して発生確率を下げる',
+    ],
+    answer: 0,
+    explanation:
+      'リスク移転は保険や外部委託で損失負担を第三者に移す対応です。廃止は回避、受け入れは保有、発生確率を下げるのは低減にあたります。',
+  },
+  {
+    id: 'TC023',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 3,
+    question: '「何も信頼しない」を前提に、社内外を問わずアクセスのたびに検証する考え方はどれか。',
+    choices: ['ゼロトラスト', '境界防御', 'ディジタルフォレンジックス', 'ペネトレーションテスト'],
+    answer: 0,
+    explanation:
+      'ゼロトラストは社内ネットワークも安全と見なさず、利用者・端末・通信を都度検証します。従来型の境界防御を補完する考え方です。',
+  },
+  {
+    id: 'TC024',
+    category: 'technology',
+    field: 'ソフトウェア',
+    difficulty: 2,
+    question: 'クラウドサービスのうち、アプリケーションをインターネット経由で利用する形態はどれか。',
+    choices: ['SaaS', 'PaaS', 'IaaS', 'BPO'],
+    answer: 0,
+    explanation:
+      'SaaSは完成したアプリを利用する形態、PaaSは開発・実行環境、IaaSはサーバやストレージなどの基盤を提供します。',
+  },
+  {
+    id: 'TC025',
+    category: 'technology',
+    field: '基礎理論',
+    difficulty: 3,
+    question: '3人でじゃんけんを1回行うとき、あいこになる確率はいくらか。',
+    choices: ['1/3', '4/9', '1/2', '5/9'],
+    answer: 0,
+    explanation:
+      '全27通りのうち、勝負がつくのは「2種類の手が出る」場合で18通り。あいこは全員同じ3通り＋3種類すべて6通りの計9通りなので9/27＝1/3です。',
+  },
+  {
+    id: 'TC026',
+    category: 'technology',
+    field: 'ハードウェア',
+    difficulty: 3,
+    question: '複数の磁気ディスクにデータを分散・冗長化して信頼性や性能を高める技術はどれか。',
+    choices: ['RAID', 'DMA', 'BIOS', 'キャッシュメモリ'],
+    answer: 0,
+    explanation:
+      'RAIDは複数台のディスクを組み合わせる技術です。RAID0はストライピングで高速化、RAID1はミラーリングで信頼性向上を図ります。',
+  },
+  {
+    id: 'TC027',
+    category: 'technology',
+    field: 'セキュリティ',
+    difficulty: 2,
+    question: '生成AIを業務利用する際の情報セキュリティ上の注意点として適切なものはどれか。',
+    choices: [
+      '顧客の個人情報や未公開の機密情報を無断で入力しない',
+      '出力結果はすべて正確なのでそのまま公開してよい',
+      '利用ログは不要なので保存しない',
+      '社内ルールを定めず各自の判断に任せる',
+    ],
+    answer: 0,
+    explanation:
+      '入力内容が学習や外部保存に利用される可能性があるため、機密情報や個人情報の入力は制限します。出力は必ず人が確認し、利用ルールとログ管理を整備します。',
+  },
+  {
+    id: 'TC028',
+    category: 'technology',
+    field: 'ネットワーク',
+    difficulty: 2,
+    question: '通信内容を暗号化してWebサイトとの安全な通信を実現する仕組みはどれか。',
+    choices: ['HTTPS（TLS）', 'HTTP', 'Telnet', 'SMTP'],
+    answer: 0,
+    explanation:
+      'HTTPSはTLSによって通信を暗号化し、盗聴・改ざん・なりすましを防ぎます。サーバ証明書によって接続先の正当性も確認できます。',
+  },
+]
+
+export const QUESTIONS_BY_ID = Object.fromEntries(QUESTIONS.map((q) => [q.id, q]))

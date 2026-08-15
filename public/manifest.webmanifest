@@ -1,0 +1,10 @@
+{
+  "name": "ITパスポート合格ナビ2027",
+  "short_name": "合格ナビ2027",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#EEF1F6",
+  "theme_color": "#101A2E",
+  "lang": "ja",
+  "icons": []
+}
