@@ -34,7 +34,8 @@ const Ctx = createContext<AuthCtx | null>(null)
 
 /** Firebaseのエラーコードを、利用者が次の行動を選べる日本語に置き換える */
 export const authMessage = (e: unknown): string => {
-  const code = (e as { code?: string })?.code ?? ''
+  const err = e as { code?: string; message?: string }
+  const code = err?.code ?? ''
   const map: Record<string, string> = {
     'auth/invalid-email': 'メールアドレスの形式が正しくありません。',
     'auth/missing-password': 'パスワードを入力してください。',
@@ -43,12 +44,26 @@ export const authMessage = (e: unknown): string => {
     'auth/invalid-credential': 'メールアドレスまたはパスワードが違います。',
     'auth/user-not-found': 'このメールアドレスは登録されていません。',
     'auth/wrong-password': 'パスワードが違います。',
+    'auth/user-disabled': 'このアカウントは停止されています。',
     'auth/too-many-requests': '試行回数が上限に達しました。しばらく待ってからお試しください。',
     'auth/network-request-failed': '通信に失敗しました。接続を確認してください。',
     'auth/popup-blocked': 'ポップアップがブロックされました。別の方法で開き直します。',
-    'auth/unauthorized-domain': 'このドメインは未承認です。Firebaseコンソールで承認済みドメインに追加してください。',
+    'auth/operation-not-allowed':
+      'メール/パスワードでの登録が有効になっていません。Firebaseコンソールの Authentication → Sign-in method で有効にしてください。',
+    'auth/admin-restricted-operation':
+      '新規登録が制限されています。Firebaseコンソールの Authentication → Settings で、ユーザーアカウントの作成を許可してください。',
+    'auth/unauthorized-domain':
+      'このドメインは未承認です。Firebaseコンソールの Authentication → Settings → 承認済みドメインに追加してください。',
+    'auth/invalid-api-key': 'Firebaseの設定値が正しくありません。Vercelの環境変数を確認してください。',
+    'auth/api-key-not-valid': 'Firebaseの設定値が正しくありません。Vercelの環境変数を確認してください。',
+    'auth/configuration-not-found':
+      'Firebase側の設定が見つかりません。Authentication を「始める」から有効化したか確認してください。',
+    'auth/operation-not-supported-in-this-environment': 'この環境では実行できない操作です。',
   }
-  return map[code] ?? '処理できませんでした。時間をおいて、もう一度お試しください。'
+  if (map[code]) return map[code]
+  // 未知のエラーは、原因を突き止められるようコードをそのまま添える
+  const detail = code || err?.message || String(e)
+  return `処理できませんでした（${detail}）`
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
