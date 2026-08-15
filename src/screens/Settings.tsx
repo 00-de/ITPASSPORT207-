@@ -4,7 +4,7 @@ import { useAuth } from '../state/AuthContext'
 import { SectionTitle } from '../components/ui'
 import { getPreferredProvider, setPreferredProvider } from '../lib/ai'
 import type { Provider } from '../lib/ai'
-import { QUESTIONS } from '../data/questions'
+import { QUESTIONS, countByCategory } from '../data/questions'
 import { TERMS } from '../data/terms'
 
 const SYNC_TEXT = {
@@ -136,6 +136,9 @@ export default function Settings({ onRequireLogin }: { onRequireLogin: () => voi
           <div>
             <div className="eyebrow">問題数</div>
             <p className="font-num font-bold text-lg">{QUESTIONS.length}問</p>
+            <p className="text-[11px] text-slate1 mt-0.5 font-num">
+              ス{countByCategory().strategy}・マ{countByCategory().management}・テ{countByCategory().technology}
+            </p>
           </div>
           <div>
             <div className="eyebrow">用語数</div>
