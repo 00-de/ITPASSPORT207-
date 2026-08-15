@@ -12,7 +12,7 @@ export type StartMode =
 interface Props {
   onStart: (m: StartMode) => void
   onMock: () => void
-  onGo: (tab: 'terms' | 'records' | 'settings') => void
+  onGo: (tab: 'teacher' | 'terms' | 'records' | 'settings') => void
 }
 
 const WEEK_PLAN: { day: string; label: string; action: StartMode | 'terms' | 'mock' }[] = [
@@ -129,6 +129,10 @@ export default function Home({ onStart, onMock, onGo }: Props) {
           <button className="card p-4 text-left" onClick={() => onGo('records')}>
             <p className="font-display font-bold">学習記録</p>
             <p className="text-xs text-slate1 mt-1">推移と苦手分析</p>
+          </button>
+          <button className="card p-4 text-left col-span-2 border-ai/30" onClick={() => onGo('teacher')}>
+            <p className="font-display font-bold text-ai">AI先生に質問する</p>
+            <p className="text-xs text-slate1 mt-1">分からないところを日本語でそのまま聞けます</p>
           </button>
         </div>
       </section>

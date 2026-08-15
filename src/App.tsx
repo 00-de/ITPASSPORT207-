@@ -6,25 +6,40 @@ import Mock from './screens/Mock'
 import Terms from './screens/Terms'
 import Records from './screens/Records'
 import Settings from './screens/Settings'
+import Teacher from './screens/Teacher'
+import Login from './screens/Login'
 import { useApp } from './state/AppContext'
+import { useAuth } from './state/AuthContext'
 import { ACHIEVEMENTS } from './data/achievements'
 import { CATEGORY_LABEL } from './types'
 import type { Question } from './types'
 import { pickByCategory, pickDaily, pickWeak } from './lib/select'
 
-type Tab = 'home' | 'terms' | 'records' | 'settings'
+type Tab = 'home' | 'teacher' | 'terms' | 'records' | 'settings'
 type View = { name: 'tab'; tab: Tab } | { name: 'quiz'; title: string; questions: Question[] } | { name: 'mock' }
+
+const SKIP_KEY = 'itp2027:skipAuth'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'home', label: 'ホーム' },
+  { id: 'teacher', label: 'AI先生' },
   { id: 'terms', label: '用語' },
   { id: 'records', label: '記録' },
   { id: 'settings', label: '設定' },
 ]
 
+const SYNC_LABEL = {
+  off: '',
+  syncing: '同期中…',
+  synced: '同期済み',
+  error: '同期できません',
+} as const
+
 export default function App() {
-  const { state, newBadges, clearNewBadges, addStudySeconds } = useApp()
+  const { state, newBadges, clearNewBadges, addStudySeconds, syncStatus } = useApp()
+  const { enabled, user, loading } = useAuth()
   const [view, setView] = useState<View>({ name: 'tab', tab: 'home' })
+  const [skipped, setSkipped] = useState(() => localStorage.getItem(SKIP_KEY) === '1')
 
   // 画面を開いている時間を1分単位で学習時間に加算する
   useEffect(() => {
@@ -40,6 +55,25 @@ export default function App() {
     return () => clearTimeout(t)
   }, [newBadges])
 
+  if (enabled && loading) {
+    return (
+      <div className="min-h-dvh flex items-center justify-center">
+        <p className="eyebrow">LOADING</p>
+      </div>
+    )
+  }
+
+  if (enabled && !user && !skipped) {
+    return (
+      <Login
+        onSkip={() => {
+          localStorage.setItem(SKIP_KEY, '1')
+          setSkipped(true)
+        }}
+      />
+    )
+  }
+
   const start = (m: StartMode) => {
     if (m.kind === 'daily') setView({ name: 'quiz', title: '今日の10問', questions: pickDaily(state.logs, state.profile.dailyGoal) })
     else if (m.kind === 'weak') setView({ name: 'quiz', title: '苦手問題', questions: pickWeak(state.logs, 10) })
@@ -54,14 +88,27 @@ export default function App() {
       ? view.title
       : view.name === 'mock'
         ? '模擬試験'
-        : { home: 'ITパスポート合格ナビ2027', terms: '用語辞典', records: '学習記録', settings: '設定' }[view.tab]
+        : {
+            home: 'ITパスポート合格ナビ2027',
+            teacher: 'AI先生',
+            terms: '用語辞典',
+            records: '学習記録',
+            settings: '設定',
+          }[view.tab]
 
   return (
     <div className="min-h-dvh pb-24">
       <header className="sticky top-0 z-20 bg-paper/85 backdrop-blur border-b border-line1">
-        <div className="max-w-lg mx-auto px-4 py-3">
-          <div className="eyebrow">IT PASSPORT 2027</div>
-          <h1 className="font-display font-black text-[17px] leading-tight">{heading}</h1>
+        <div className="max-w-lg mx-auto px-4 py-3 flex items-end justify-between gap-3">
+          <div>
+            <div className="eyebrow">IT PASSPORT 2027</div>
+            <h1 className="font-display font-black text-[17px] leading-tight">{heading}</h1>
+          </div>
+          {syncStatus !== 'off' && (
+            <span className={`eyebrow ${syncStatus === 'error' ? 'text-seal' : 'text-slate1/70'}`}>
+              {SYNC_LABEL[syncStatus]}
+            </span>
+          )}
         </div>
       </header>
 
@@ -69,9 +116,17 @@ export default function App() {
         {view.name === 'tab' && view.tab === 'home' && (
           <Home onStart={start} onMock={() => setView({ name: 'mock' })} onGo={goTab} />
         )}
+        {view.name === 'tab' && view.tab === 'teacher' && <Teacher />}
         {view.name === 'tab' && view.tab === 'terms' && <Terms />}
         {view.name === 'tab' && view.tab === 'records' && <Records />}
-        {view.name === 'tab' && view.tab === 'settings' && <Settings />}
+        {view.name === 'tab' && view.tab === 'settings' && (
+          <Settings
+            onRequireLogin={() => {
+              localStorage.removeItem(SKIP_KEY)
+              setSkipped(false)
+            }}
+          />
+        )}
         {view.name === 'quiz' && <Quiz title={view.title} questions={view.questions} onExit={() => goTab('home')} />}
         {view.name === 'mock' && <Mock onExit={() => goTab('home')} />}
       </main>
@@ -89,7 +144,7 @@ export default function App() {
       )}
 
       <nav className="fixed bottom-0 inset-x-0 z-20 bg-white/95 backdrop-blur border-t border-line1 pb-[env(safe-area-inset-bottom)]">
-        <ul className="max-w-lg mx-auto grid grid-cols-4">
+        <ul className="max-w-lg mx-auto grid grid-cols-5">
           {TABS.map((t) => (
             <li key={t.id}>
               <button

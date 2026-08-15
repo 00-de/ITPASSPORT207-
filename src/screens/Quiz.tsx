@@ -4,6 +4,7 @@ import { QUESTIONS } from '../data/questions'
 import { useApp } from '../state/AppContext'
 import { Bar, CategoryTag } from '../components/ui'
 import { shuffle } from '../lib/util'
+import { askTeacher, questionToPrompt } from '../lib/ai'
 
 interface Props {
   title: string
@@ -17,6 +18,9 @@ export default function Quiz({ title, questions, onExit }: Props) {
   const [index, setIndex] = useState(0)
   const [picked, setPicked] = useState<number | null>(null)
   const [results, setResults] = useState<{ q: Question; correct: boolean }[]>([])
+  const [aiText, setAiText] = useState('')
+  const [aiBusy, setAiBusy] = useState(false)
+  const [aiError, setAiError] = useState('')
   const startedAt = useRef(Date.now())
 
   const q = queue[index]
@@ -107,8 +111,25 @@ export default function Quiz({ title, questions, onExit }: Props) {
 
   const next = () => {
     setPicked(null)
+    setAiText('')
+    setAiError('')
     setIndex((i) => i + 1)
     startedAt.current = Date.now()
+  }
+
+  const askSimpler = async () => {
+    setAiBusy(true)
+    setAiError('')
+    try {
+      const r = await askTeacher(
+        `${questionToPrompt(q)}\n\nこの問題について、ITが苦手な人にも分かるよう、もっと簡単に説明してください。`,
+      )
+      setAiText(r.text)
+    } catch (e) {
+      setAiError((e as Error).message)
+    } finally {
+      setAiBusy(false)
+    }
   }
 
   const addSimilar = () => {
@@ -180,7 +201,19 @@ export default function Quiz({ title, questions, onExit }: Props) {
           <p className="eyebrow mt-4">解説</p>
           <p className="text-[15px] leading-relaxed mt-1">{q.explanation}</p>
 
-          <div className="grid grid-cols-2 gap-3 mt-5">
+          {aiText && (
+            <div className="mt-4 rounded-xl bg-ai/[.05] border border-ai/20 p-4 animate-slideup">
+              <p className="eyebrow text-ai">AI先生のやさしい説明</p>
+              <p className="text-[15px] leading-relaxed mt-1 whitespace-pre-wrap">{aiText}</p>
+            </div>
+          )}
+          {aiError && <p className="text-sm text-seal mt-3">{aiError}</p>}
+
+          <button className="btn-ghost w-full mt-4" onClick={askSimpler} disabled={aiBusy || Boolean(aiText)}>
+            {aiBusy ? 'AI先生が考えています…' : 'もっと簡単に説明して'}
+          </button>
+
+          <div className="grid grid-cols-2 gap-3 mt-3">
             <button className="btn-ghost" onClick={addSimilar} disabled={similar.length === 0}>
               類似問題に挑戦
             </button>

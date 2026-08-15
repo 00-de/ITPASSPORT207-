@@ -1,15 +1,69 @@
 import { useState } from 'react'
 import { useApp } from '../state/AppContext'
+import { useAuth } from '../state/AuthContext'
 import { SectionTitle } from '../components/ui'
+import { getPreferredProvider, setPreferredProvider } from '../lib/ai'
+import type { Provider } from '../lib/ai'
 import { QUESTIONS } from '../data/questions'
 import { TERMS } from '../data/terms'
 
-export default function Settings() {
-  const { state, updateProfile, resetAll } = useApp()
+const SYNC_TEXT = {
+  off: 'この端末だけに保存しています',
+  syncing: 'クラウドと同期しています…',
+  synced: 'クラウドと同期済みです',
+  error: '同期に失敗しました。通信を確認してください',
+} as const
+
+export default function Settings({ onRequireLogin }: { onRequireLogin: () => void }) {
+  const { state, updateProfile, resetAll, syncStatus, lastSyncedAt } = useApp()
+  const { enabled, user, logout } = useAuth()
   const [confirming, setConfirming] = useState(false)
+  const [provider, setProvider] = useState<Provider>(() => getPreferredProvider())
+
+  const chooseProvider = (p: Provider) => {
+    setPreferredProvider(p)
+    setProvider(p)
+  }
 
   return (
     <div className="space-y-6">
+      <section>
+        <SectionTitle eyebrow="ACCOUNT" title="アカウント" />
+        <div className="card p-5 space-y-3">
+          {!enabled ? (
+            <p className="text-sm text-slate1 leading-relaxed">
+              Firebaseの設定値が登録されていないため、ログイン機能は使えません。学習記録はこの端末にだけ保存されます。
+            </p>
+          ) : user ? (
+            <>
+              <div>
+                <div className="eyebrow">ログイン中</div>
+                <p className="font-display font-bold">{user.displayName || user.email}</p>
+                {user.displayName && <p className="text-xs text-slate1">{user.email}</p>}
+              </div>
+              <p className="text-sm text-slate1">
+                {SYNC_TEXT[syncStatus]}
+                {lastSyncedAt && syncStatus === 'synced' && (
+                  <span className="font-num text-xs">（{new Date(lastSyncedAt).toLocaleTimeString('ja-JP')}）</span>
+                )}
+              </p>
+              <button className="btn-ghost w-full" onClick={() => logout()}>
+                ログアウト
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="text-sm text-slate1 leading-relaxed">
+                ログインすると、学習記録がクラウドに保存され、スマートフォンとパソコンで同じ記録を使えます。この端末の記録はログイン時に引き継がれます。
+              </p>
+              <button className="btn-primary w-full" onClick={onRequireLogin}>
+                ログイン・新規登録
+              </button>
+            </>
+          )}
+        </div>
+      </section>
+
       <section>
         <SectionTitle eyebrow="PROFILE" title="学習者情報" />
         <div className="card p-5 space-y-4">
@@ -47,6 +101,35 @@ export default function Settings() {
       </section>
 
       <section>
+        <SectionTitle eyebrow="AI TEACHER" title="AI先生の設定" />
+        <div className="card p-5 space-y-3">
+          <p className="eyebrow">使用するAI</p>
+          <div className="grid grid-cols-3 gap-2">
+            {(
+              [
+                ['auto', '自動'],
+                ['groq', 'Groq'],
+                ['openai', 'ChatGPT'],
+              ] as [Provider, string][]
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                onClick={() => chooseProvider(id)}
+                className={`rounded-xl py-2.5 font-display font-bold text-sm transition ${
+                  provider === id ? 'bg-ink text-white' : 'bg-paper text-slate1'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-slate1 leading-relaxed">
+            「自動」はGroqを先に使い、応答できないときChatGPTに切り替えます。片方のAPIキーだけ登録している場合は、そちらだけを使います。
+          </p>
+        </div>
+      </section>
+
+      <section>
         <SectionTitle eyebrow="CONTENT" title="収録データ" />
         <div className="card p-5 grid grid-cols-2 gap-4 text-sm">
           <div>
@@ -67,7 +150,7 @@ export default function Settings() {
         <SectionTitle eyebrow="DATA" title="データ管理" />
         <div className="card p-5 space-y-3">
           <p className="text-sm text-slate1 leading-relaxed">
-            学習データはこの端末のブラウザに保存されています。消去すると解答履歴・実績・お気に入りがすべて失われ、元に戻せません。
+            この操作はこの端末の記録だけを消します。ログイン中の場合、クラウドの記録は残っており、次回ログイン時に戻ります。
           </p>
           {confirming ? (
             <div className="grid grid-cols-2 gap-3">
@@ -75,12 +158,12 @@ export default function Settings() {
                 やめる
               </button>
               <button className="btn bg-seal text-white" onClick={resetAll}>
-                すべて消去する
+                この端末から消去
               </button>
             </div>
           ) : (
             <button className="btn-ghost w-full text-seal border-seal/40" onClick={() => setConfirming(true)}>
-              学習データを消去する
+              この端末の学習データを消去する
             </button>
           )}
         </div>

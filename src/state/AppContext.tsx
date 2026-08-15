@@ -3,6 +3,10 @@ import type { ReactNode } from 'react'
 import type { AnswerLog, AppState, MockResult, Profile } from '../types'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { calcLevel, calcStreak, load, save, todayKey } from '../lib/util'
+import { fetchRemote, mergeState, pushRemote } from '../lib/sync'
+import { useAuth } from './AuthContext'
+
+export type SyncStatus = 'off' | 'syncing' | 'synced' | 'error'
 
 interface Ctx {
   state: AppState
@@ -10,6 +14,8 @@ interface Ctx {
   level: ReturnType<typeof calcLevel>
   todayRecord: { answered: number; correct: number; seconds: number }
   newBadges: string[]
+  syncStatus: SyncStatus
+  lastSyncedAt: number | null
   clearNewBadges: () => void
   recordAnswer: (log: AnswerLog) => void
   addStudySeconds: (sec: number) => void
@@ -22,10 +28,16 @@ interface Ctx {
 const AppCtx = createContext<Ctx | null>(null)
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+  const { user, enabled } = useAuth()
   const [state, setState] = useState<AppState>(() => load())
   const [newBadges, setNewBadges] = useState<string[]>([])
+  const [syncStatus, setSyncStatus] = useState<SyncStatus>('off')
+  const [lastSyncedAt, setLastSyncedAt] = useState<number | null>(null)
   const first = useRef(true)
+  const pushTimer = useRef<number | null>(null)
+  const mergedFor = useRef<string | null>(null)
 
+  // 端末内には常に保存する。通信できない場面でも学習を止めないため
   useEffect(() => {
     if (first.current) {
       first.current = false
@@ -33,6 +45,57 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     }
     save(state)
   }, [state])
+
+  // ログイン時：クラウドの記録を取り込み、端末の記録と突き合わせる
+  useEffect(() => {
+    if (!enabled || !user) {
+      setSyncStatus('off')
+      if (!user) mergedFor.current = null
+      return
+    }
+    if (mergedFor.current === user.uid) return
+    mergedFor.current = user.uid
+    let alive = true
+    ;(async () => {
+      setSyncStatus('syncing')
+      try {
+        const remote = await fetchRemote(user.uid)
+        if (!alive) return
+        setState((local) => {
+          const merged = remote ? mergeState(local, remote) : local
+          if (!merged.profile.name && user.displayName) merged.profile.name = user.displayName
+          void pushRemote(user.uid, merged)
+          return merged
+        })
+        setLastSyncedAt(Date.now())
+        setSyncStatus('synced')
+      } catch {
+        if (alive) setSyncStatus('error')
+      }
+    })()
+    return () => {
+      alive = false
+    }
+  }, [user?.uid, enabled])
+
+  // 学習内容が変わったら、少し待ってからまとめて書き込む
+  useEffect(() => {
+    if (!enabled || !user || mergedFor.current !== user.uid) return
+    if (pushTimer.current) window.clearTimeout(pushTimer.current)
+    pushTimer.current = window.setTimeout(async () => {
+      setSyncStatus('syncing')
+      try {
+        await pushRemote(user.uid, state)
+        setLastSyncedAt(Date.now())
+        setSyncStatus('synced')
+      } catch {
+        setSyncStatus('error')
+      }
+    }, 2500)
+    return () => {
+      if (pushTimer.current) window.clearTimeout(pushTimer.current)
+    }
+  }, [state, user?.uid, enabled])
 
   // 実績の判定は状態が変わるたびに行い、新規解放だけを通知する
   useEffect(() => {
@@ -65,6 +128,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
       level: calcLevel(state.logs),
       todayRecord: state.days[todayKey()] ?? { answered: 0, correct: 0, seconds: 0 },
       newBadges,
+      syncStatus,
+      lastSyncedAt,
       clearNewBadges: () => setNewBadges([]),
       recordAnswer: (log) =>
         setState((s) => ({
@@ -85,7 +150,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         location.reload()
       },
     }),
-    [state, newBadges],
+    [state, newBadges, syncStatus, lastSyncedAt],
   )
 
   return <AppCtx.Provider value={value}>{children}</AppCtx.Provider>
